@@ -28,6 +28,9 @@ public class RidingActivity extends AppCompatActivity {
     private static final String BOOLEAN_MESSAGE = "com.example.falldetector.BOOLEAN";
     private static final String RIDE_BUTTON_TEXT = "com.example.falldetector.RIDE_BUTTON";
     private static final String TIME_WHEN_STOPPED = "com.example.falldetector.TIME_WHEN_STOPPED";
+
+    public static final String TIME_WHEN_ENDED = "com.example.falldetector.TIME_WHEN_ENDED";
+
     public static int fallsDetected = 0;
 
 
@@ -61,6 +64,7 @@ public class RidingActivity extends AppCompatActivity {
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         rideChronometer = findViewById(R.id.ridingChronometer);
+
         if(savedInstanceState == null) {
             System.out.println("First start");
             rideChronometer.setBase(SystemClock.elapsedRealtime());
@@ -134,6 +138,12 @@ public class RidingActivity extends AppCompatActivity {
         System.out.println("DESTROY");
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("STOP");
+    }
+
     public void pauseOrStartRide(View view) {
         Button pauseOrStartButton = findViewById(R.id.pauseOrStartButton);
         if (rideRunning) {
@@ -162,6 +172,19 @@ public class RidingActivity extends AppCompatActivity {
     public void stopRide(View view) {
         // send user to save info about ride
         // send chronometer time as well
+        new AlertDialog.Builder(this)
+                .setTitle("Are you sure you want to stop the ride?")
+                .setMessage("You'll be able to save the ride on the next page")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(RidingActivity.this, SaveRideActivity.class);
+                        intent.putExtra(TIME_WHEN_ENDED, rideChronometer.getBase());
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private SensorEventListener accelerometerListener = new SensorEventListener() {
@@ -179,8 +202,8 @@ public class RidingActivity extends AppCompatActivity {
 
                 DecimalFormat precision = new DecimalFormat("0.00");
                 double accelerationRounded = Double.parseDouble(precision.format(accelerationReader));
-
-                System.out.println(accelerationRounded);
+                System.out.println(fallsDetected);
+//                System.out.println(accelerationRounded);
                 if(accelerationRounded > 0.3d && accelerationRounded < 1.7d) {
                     System.out.println("FALLIIIIIIING");
 //                    if (accelerometer != null) {

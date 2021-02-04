@@ -1,19 +1,45 @@
 package com.example.falldetector.ui.history;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.falldetector.database.DatabaseHandler;
+import com.example.falldetector.database.Ride;
+
+import java.util.List;
+
 public class HistoryViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<List<Ride>> mRides = new MutableLiveData<>();
+    private int nbRides;
+    private final DatabaseHandler db;
 
-    public HistoryViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+    public HistoryViewModel(Context context) {
+        db = new DatabaseHandler(context);
+        updateLiveDataList();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void clearList(Ride ride) {
+        db.deleteRide(ride);
+        updateLiveDataList();
+    }
+
+    public MutableLiveData<List<Ride>> getRides() {
+        return mRides;
+    }
+
+    private void updateLiveDataList() {
+        List<Ride> rideList = db.getAllRides();
+        nbRides = rideList.size();
+        mRides.postValue(rideList);
+    }
+
+    @Override
+    protected void onCleared() {
+        db.close();
+        super.onCleared();
     }
 }

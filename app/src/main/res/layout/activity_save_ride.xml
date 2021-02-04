@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="500dp"
+    android:orientation="vertical"
+    android:gravity="left"
+    tools:context=".SaveRideActivity">
+    <TableLayout
+        android:id="@+id/saveTableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="*"
+        android:layout_marginLeft="18dip"
+        android:layout_marginRight="18dip">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/saveChronometerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Total time" />
+            <TextView
+                android:id="@+id/timeRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="30sp"
+                android:text="Hello"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/howWasRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="How was the ride?" />
+
+            <Spinner
+                android:id="@+id/howWasRideEdit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/howWasTheRide"
+                android:minHeight="46dp" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/howWasWeather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="How was the weather?" />
+
+            <EditText
+                android:id="@+id/howWasWeatherEdit"
+                android:layout_width="fill_parent"
+                android:hint="Cloudy/Sunny/Snowy"
+                android:inputType="text"/>
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/pauseOrStartButton"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_span="2"
+                android:onClick="submitForm"
+                android:text="Submit form" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Chronometer android:id="@+id/saveChronometer" android:layout_width="0dp" android:layout_height="0dp"/>
+
+
+
+</LinearLayout>
